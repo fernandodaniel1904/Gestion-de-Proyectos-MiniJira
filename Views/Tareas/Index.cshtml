@@ -1,0 +1,75 @@
+@model IEnumerable<Gestion_de_Proyectos_MiniJira.Models.Tarea>
+
+@{
+    ViewData["Title"] = "Tareas";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>✅ Mis Tareas</h1>
+    <a asp-action="Create" class="btn btn-success">+ Nueva Tarea</a>
+</div>
+
+@if (Model.Any())
+{
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Proyecto</th>
+                <th>Estado</th>
+                <th>Prioridad</th>
+                <th>Vencimiento</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Titulo</td>
+                    <td>@item.Proyecto?.Nombre</td>
+                    <td>
+                        @if (item.Estado == Gestion_de_Proyectos_MiniJira.Models.EstadoTarea.PorHacer)
+                        {
+                            <span class="badge bg-secondary">Por Hacer</span>
+                        }
+                        else if (item.Estado == Gestion_de_Proyectos_MiniJira.Models.EstadoTarea.EnProgreso)
+                        {
+                            <span class="badge bg-info">En Progreso</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">Completada</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.Prioridad == Gestion_de_Proyectos_MiniJira.Models.Prioridad.Baja)
+                        {
+                            <span class="badge bg-success">Baja</span>
+                        }
+                        else if (item.Prioridad == Gestion_de_Proyectos_MiniJira.Models.Prioridad.Media)
+                        {
+                            <span class="badge bg-warning">Media</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Alta</span>
+                        }
+                    </td>
+                    <td>@item.FechaVencimiento?.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">No hay tareas</h4>
+        <p>No tienes ninguna tarea creada. <a asp-action="Create">Crea una aquí</a></p>
+    </div>
+}
