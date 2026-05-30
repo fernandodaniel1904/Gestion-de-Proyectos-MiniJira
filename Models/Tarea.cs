@@ -1,19 +1,21 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Gestion_de_Proyectos_MiniJira.Models
 {
     public class Tarea
     {
         public int Id { get; set; }
+
+        [Required]
         public string Titulo { get; set; } = string.Empty;
+
+        [StringLength(300)]
         public string Descripcion { get; set; } = string.Empty;
-        public DateTime FechaCreacion { get; set; } = DateTime.Now;
-        public DateTime? FechaVencimiento { get; set; }
+
         public EstadoTarea Estado { get; set; } = EstadoTarea.PorHacer;
         public Prioridad Prioridad { get; set; } = Prioridad.Media;
-        
-        // Clave foránea
+
         public int ProyectoId { get; set; }
-        
-        // Relación inversa
         public Proyecto? Proyecto { get; set; }
     }
 
